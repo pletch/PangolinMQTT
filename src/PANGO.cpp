@@ -171,7 +171,7 @@ void PANGO::_release(mb m){
             size_t toSend=std::min(_space,bytesLeft);
             _HAL_feedWatchdog();
 //            PANGO_PRINT("OUTBOUND CHUNK len=%d space=%d BL=%d\n",toSend,_space,bytesLeft);
-            TXQ.push(mb(toSend,m.data+(m.len - bytesLeft),m.id,(--nFrags) ? (ADFP) nFrags:m.data,true)); // very naughty, but works :)
+            TXQ.push(mb(toSend,m.data+(m.len - bytesLeft),m.id,(--nFrags) ? (ADFP) (uint32_t)nFrags:m.data,true)); // very naughty, but works :)
             bytesLeft-=toSend;
         } while(bytesLeft);
         TXQ.pop(); // hara kiri - queue is now n smaller copies of yourself!

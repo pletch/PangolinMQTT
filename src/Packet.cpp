@@ -145,7 +145,7 @@ ConnectPacket::ConnectPacket(): Packet(CONNECT,10){
         if(PangolinMQTT::_cleanSession) protocol[7]|=CLEAN_SESSION;
         if(PangolinMQTT::_willRetain) protocol[7]|=WILL_RETAIN;
         if(PangolinMQTT::_willQos) protocol[7]|=(PangolinMQTT::_willQos==1) ? WILL_QOS1:WILL_QOS2;
-        uint8_t* pClientId=_stringblock(PANGO::LIN->_clientId);
+        _stringblock(PANGO::LIN->_clientId);
         if(PangolinMQTT::_willTopic.size()){
             _stringblock(PangolinMQTT::_willTopic);
             _stringblock(PangolinMQTT::_willPayload);
@@ -168,7 +168,7 @@ ConnectPacket::ConnectPacket(): Packet(CONNECT,10){
 }
 
 PublishPacket::PublishPacket(const char* topic, uint8_t qos, bool retain, uint8_t* payload, size_t length, bool dup,uint16_t givenId):
-    _topic(topic),_qos(qos),_retain(retain),_length(length),_dup(dup),_givenId(givenId),Packet(PUBLISH) {
+    Packet(PUBLISH),_topic(topic),_qos(qos),_retain(retain),_length(length),_dup(dup),_givenId(givenId) {
         if(length < PANGO::LIN->getMaxPayloadSize()){
             _begin=[this]{ 
                 _stringblock(CSTR(_topic));

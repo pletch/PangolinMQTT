@@ -65,7 +65,7 @@ class Packet {
         static  PANGO_PACKET_MAP  _outbound;
         static  PANGO_PACKET_MAP  _inbound;
 
-        Packet(uint8_t controlcode,uint8_t adj=0,bool hasid=false): _controlcode(controlcode),_hdrAdjust(adj),_hasId(hasid){}
+        Packet(uint8_t controlcode,uint8_t adj=0,bool hasid=false): _hdrAdjust(adj),_hasId(hasid),_controlcode(controlcode){}
 
         static  void             ACKoutbound(uint16_t id){ /*PANGO_PRINT("ACK O/B %d\n",id);*/ _ACK(&_outbound,id,false); }
 };
@@ -102,7 +102,7 @@ class SubscribePacket: public Packet {
         std::string          _topic;
     public:
         uint8_t         _qos;
-        SubscribePacket(const std::string& topic,uint8_t qos): _topic(topic),_qos(qos),Packet(SUBSCRIBE,1,true) {
+        SubscribePacket(const std::string& topic,uint8_t qos): Packet(SUBSCRIBE,1,true),_topic(topic),_qos(qos) {
             _id=++_nextId;
             _begin=[this]{ _stringblock(CSTR(_topic)); };
             _end=[this](uint8_t* p,mb* base){ *p=_qos; };
@@ -112,7 +112,7 @@ class SubscribePacket: public Packet {
 class UnsubscribePacket: public Packet {
         std::string          _topic;
     public:
-        UnsubscribePacket(const std::string& topic): _topic(topic),Packet(UNSUBSCRIBE,0,true) {
+        UnsubscribePacket(const std::string& topic): Packet(UNSUBSCRIBE,0,true),_topic(topic) {
             _id=++_nextId;
             _begin=[this]{ _stringblock(CSTR(_topic)); };
             _build();
