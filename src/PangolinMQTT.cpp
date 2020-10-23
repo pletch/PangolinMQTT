@@ -99,7 +99,7 @@ void PangolinMQTT::_notify(uint8_t e,int info){
 void PangolinMQTT::_fatal(uint8_t e,int info){
     if(_cbError) _cbError(e,info);
     PANGO::TCP->close(true);
-    Serial.printf("FATAL ERROR %d INFO=%d - POWER CYCLE REQUIRED\n",e,info);
+    PANGO_PRINT("FATAL ERROR %d INFO=%d - POWER CYCLE REQUIRED\n",e,info);
     while(1) PANGO::_HAL_feedWatchdog();
 }
 
@@ -135,7 +135,7 @@ void PangolinMQTT::_handlePacket(mb m){
             else {
                 PANGO::_space=PANGO::TCP->space();
                 bool session=i[0] & 0x01;
-                Serial.printf("\nSESSION IS %s\n",session ? "DIRTY":"CLEAN");
+                PANGO_PRINT("\nSESSION IS %s\n",session ? "DIRTY":"CLEAN");
                 Packet::_resendPartialTxns();
                 PANGO_PRINT("CONNECTED FH=%u SH=%u\n",PANGO::_HAL_getFreeHeap(),getMaxPayloadSize());
                 if(_cbConnect) _cbConnect(session);

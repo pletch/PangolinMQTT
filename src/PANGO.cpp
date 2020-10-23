@@ -203,20 +203,20 @@ void  PANGO::_txPacket(mb m){
 //
 void PANGO::dumphex(uint8_t* mem, size_t len,uint8_t W) {
     uint8_t* src = mem;
-    Serial.printf("Address: 0x%08X len: 0x%X (%d)", (ptrdiff_t)src, len, len);
+    PANGO_PRINT("Address: 0x%08X len: 0x%X (%d)", (ptrdiff_t)src, len, len);
     for(uint32_t i = 0; i < len; i++) {
-        if(i % W == 0) Serial.printf("\n[0x%08X] 0x%08X: ", (ptrdiff_t)src, i);
-        Serial.printf("%02X ", *src);
+        if(i % W == 0) PANGO_PRINT("\n[0x%08X] 0x%08X: ", (ptrdiff_t)src, i);
+        PANGO_PRINT("%02X ", *src);
         src++;
         //
         if(i % W == W-1 || src==mem+len){
             size_t ff=W-((src-mem) % W);
-            for(int p=0;p<(ff % W);p++) Serial.print("   ");
-            Serial.print("  "); // stretch this for nice alignment of final fragment
-            for(uint8_t* j=src-(W-(ff%W));j<src;j++) Serial.printf("%c", isprint(*j) ? *j:'.');
+            for(int p=0;p<(ff % W);p++) PANGO_PRINT("   ");
+            PANGO_PRINT("  "); // stretch this for nice alignment of final fragment
+            for(uint8_t* j=src-(W-(ff%W));j<src;j++) PANGO_PRINT("%c", isprint(*j) ? *j:'.');
         }
     }
-    Serial.println();
+    PANGO_PRINT("\n");
 }
 
 char* PANGO::payloadToCstring(uint8_t* data,size_t len){
