@@ -99,8 +99,8 @@ void PangolinMQTT::_notify(uint8_t e,int info){
 void PangolinMQTT::_fatal(uint8_t e,int info){
     if(_cbError) _cbError(e,info);
     PANGO::TCP->close(true);
-    PANGO_PRINT("FATAL ERROR %d INFO=%d - POWER CYCLE REQUIRED\n",e,info);
-    while(1) PANGO::_HAL_feedWatchdog();
+    PANGO_PRINT("FATAL ERROR %d INFO=%d\n",e,info);
+    //while(1) PANGO::_HAL_feedWatchdog();
 }
 
 void PangolinMQTT::_handlePublish(mb m){
